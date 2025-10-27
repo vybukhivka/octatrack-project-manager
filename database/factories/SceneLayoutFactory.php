@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TrackLayout>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SceneLayout>
  */
-class TrackLayoutFactory extends Factory
+class SceneLayoutFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class TrackLayoutFactory extends Factory
     public function definition(): array
     {
         return [
-            'track_index' => fake()->numberBetween(1, 8),
+            'scene_index' => fake()->numberBetween(1, 16),
             'label' => fake()->word(),
         ];
     }

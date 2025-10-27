@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('scene_layouts', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Project::class);
             $table->unsignedTinyInteger('scene_index');
             $table->string('label');
             $table->timestamps();

@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('part_layouts', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Project::class);
             $table->unsignedTinyInteger('part_index');
             $table->string('label');
             $table->timestamps();

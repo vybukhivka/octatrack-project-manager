@@ -2,6 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\PartLayout;
+use App\Models\Project;
+use App\Models\SceneLayout;
+use App\Models\TrackLayout;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,5 +27,14 @@ class ProjectFactory extends Factory
             'duration_minutes' => fake()->numberBetween(30, 90),
             'is_done' => fake()->boolean(),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Project $project) {
+            TrackLayout::factory()->for($project)->create();
+            SceneLayout::factory()->for($project)->create();
+            PartLayout::factory()->for($project)->create();
+        });
     }
 }

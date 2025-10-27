@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SceneLayout extends Model
 {
-    protected $fillable = ['project_id', 'scene_index', 'label'];
+    use HasFactory;
+
+    protected $fillable = ['scene_index', 'label'];
 
     public function project(): BelongsTo
     {
