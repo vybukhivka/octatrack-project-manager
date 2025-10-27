@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('track_layouts', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Project::class);
             $table->unsignedTinyInteger('track_index');
             $table->string('label');
             $table->timestamps();
