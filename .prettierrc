@@ -6,6 +6,7 @@
     "printWidth": 80,
     "plugins": [
         "prettier-plugin-organize-imports",
+        "@prettier/plugin-php",
         "prettier-plugin-tailwindcss"
     ],
     "tailwindFunctions": [
