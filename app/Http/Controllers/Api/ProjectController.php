@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
+use App\Jobs\ProcessProjectBackup;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -47,5 +48,14 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         //
+    }
+
+    public function process(Project $project)
+    {
+        $project->update(['status' => 'processing']);
+        ProcessProjectBackup::dispatch($project);
+        return response()->json([
+            'message' => 'Project processing has started.',
+        ]);
     }
 }

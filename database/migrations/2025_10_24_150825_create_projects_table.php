@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->unsignedSmallInteger('number_of_tracks');
             $table->unsignedInteger('duration_minutes');
             $table->boolean('is_done')->default(false);
+            $table->string('status')->nullable()->default('pending');
             $table->timestamps();
         });
     }
