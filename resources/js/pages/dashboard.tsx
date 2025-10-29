@@ -3,6 +3,8 @@ import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -10,8 +12,39 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dashboard().url,
     },
 ];
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
 
 export default function Dashboard() {
+    const queryClient = useQueryClient();
+    const {
+        data: projects,
+        isLoading,
+        isError,
+        error,
+    } = useQuery({
+        queryKey: ['projects'],
+        queryFn: async () => {
+            try {
+                const response = await axios.get('/api/projects');
+
+                return response.data.data;
+            } catch (err) {
+                console.error('Error fetching projects:', err);
+                if (axios.isAxiosError(err)) {
+                    console.error(
+                        'Axios error details:',
+                        err.response?.status,
+                        err.response?.data,
+                    );
+                }
+                throw err;
+            }
+        },
+    });
+
+    console.log('pr', projects);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
