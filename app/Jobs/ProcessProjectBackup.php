@@ -27,7 +27,6 @@ class ProcessProjectBackup implements ShouldQueue
     public function handle(): void
     {
         sleep(3);
-
         $this->project->update(['status' => 'processed']);
     }
 }
