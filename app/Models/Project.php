@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
@@ -19,18 +19,18 @@ class Project extends Model
         'is_done',
     ];
 
-    public function trackLayout(): HasOne
+    public function trackLayout(): HasMany
     {
-        return $this->hasOne(TrackLayout::class);
+        return $this->hasMany(TrackLayout::class);
     }
 
-    public function sceneLayout(): HasOne
+    public function sceneLayout(): HasMany
     {
-        return $this->hasOne(SceneLayout::class);
+        return $this->hasMany(SceneLayout::class);
     }
 
-    public function partLayout(): HasOne
+    public function partLayout(): HasMany
     {
-        return $this->hasOne(PartLayout::class);
+        return $this->hasMany(PartLayout::class);
     }
 }

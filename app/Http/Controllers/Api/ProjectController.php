@@ -31,6 +31,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $project->load(['trackLayout', 'partLayout', 'sceneLayout']);
         return new ProjectResource($project);
     }
 
