@@ -17,7 +17,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
-export default function Dashboard() {
+export default function Projects() {
     const queryClient = useQueryClient();
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
         null,
@@ -50,7 +50,7 @@ export default function Dashboard() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head title="Projects" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     {isLoading && <div>Loading...</div>}
