@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogOverlay,
     DialogPortal,
@@ -23,9 +24,10 @@ export default function ProjectModal({
     const { data: project, isLoading } = useQuery({
         queryKey: ['project', 'projectId'],
         queryFn: async () => {
-            const response = await axios.get(`/api/project/${projectId}`);
+            const response = await axios.get(`/api/projects/${projectId}`);
             return response.data.data;
         },
+        enabled: !!projectId,
     });
     return (
         <Dialog open={open} onOpenChange={onClose}>
@@ -39,6 +41,7 @@ export default function ProjectModal({
                                 <DialogTitle className="text-xl font-bold dark:text-white">
                                     {project.title}
                                 </DialogTitle>
+                                <DialogDescription>check</DialogDescription>
                             </DialogHeader>
                         </>
                     )}

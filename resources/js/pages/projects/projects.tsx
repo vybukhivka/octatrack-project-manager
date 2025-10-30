@@ -60,7 +60,7 @@ export default function Dashboard() {
                             <div
                                 key={project.id}
                                 onClick={() => setSelectedProjectId(project.id)}
-                                className="relative flex aspect-video flex-col justify-between overflow-hidden rounded-xl border border-sidebar-border/70 p-4 shadow-sm dark:border-sidebar-border"
+                                className="relative flex aspect-video cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-sidebar-border/70 p-4 shadow-sm dark:border-sidebar-border"
                             >
                                 <div className="mb-3 flex justify-between">
                                     <h3 className="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
