@@ -4,7 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import { projects } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -18,7 +18,6 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
 export default function Projects() {
-    const queryClient = useQueryClient();
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
         null,
     );
