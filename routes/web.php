@@ -14,7 +14,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('projects', function () {
-        return Inertia::render('projects');
+        return Inertia::render('projects/projects');
     })->name('projects');
 });
 
