@@ -1,3 +1,4 @@
+import ProjectModal from '@/components/project-modal';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { projects } from '@/routes';
@@ -5,6 +6,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,11 +19,14 @@ axios.defaults.withXSRFToken = true;
 
 export default function Dashboard() {
     const queryClient = useQueryClient();
+    const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
+        null,
+    );
+
     const {
         data: projects,
         isLoading,
         isError,
-        error,
     } = useQuery({
         queryKey: ['projects'],
         queryFn: async () => {
@@ -43,8 +48,6 @@ export default function Dashboard() {
         },
     });
 
-    console.log('pr', projects);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -56,6 +59,7 @@ export default function Dashboard() {
                         projects.map((project) => (
                             <div
                                 key={project.id}
+                                onClick={() => setSelectedProjectId(project.id)}
                                 className="relative flex aspect-video flex-col justify-between overflow-hidden rounded-xl border border-sidebar-border/70 p-4 shadow-sm dark:border-sidebar-border"
                             >
                                 <div className="mb-3 flex justify-between">
@@ -95,6 +99,13 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         ))}
+                    {selectedProjectId && (
+                        <ProjectModal
+                            projectId={selectedProjectId}
+                            open={!!selectedProjectId}
+                            onClose={() => setSelectedProjectId(null)}
+                        />
+                    )}
                 </div>
                 <div className="min-h- relative flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
                     <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
