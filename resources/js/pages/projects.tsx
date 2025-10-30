@@ -1,6 +1,6 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
+import { projects } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ import axios from 'axios';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Projects',
-        href: dashboard().url,
+        href: projects().url,
     },
 ];
 axios.defaults.withCredentials = true;
