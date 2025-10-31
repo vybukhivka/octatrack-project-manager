@@ -1,5 +1,7 @@
+import { useForm } from '@inertiajs/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { z } from 'zod';
 import {
     Dialog,
     DialogContent,
@@ -10,17 +12,49 @@ import {
     DialogTitle,
 } from './ui/dialog';
 
+const layoutSchema = z.object({
+    id: z.number(),
+    label: z.string().max(32, 'Label is too long').optional().or(z.literal('')),
+});
+const projectSchema = z.object({
+    title: z.string().min(1, 'Title is required').max(32, 'Title is too long'),
+    genre: z.string().max(16, 'Genre is too long').optional().or(z.literal('')),
+    tracks: z.array(layoutSchema),
+    parts: z.array(layoutSchema),
+    scenes: z.array(layoutSchema),
+});
+
 type ProjectModalProps = {
     projectId: number;
     open: boolean;
     onClose: () => void;
+    onSaveSuccess: () => void;
 };
+
+type ProjectFormData = z.infer<typeof projectSchema>;
 
 export default function ProjectModal({
     projectId,
     open,
     onClose,
+    onSaveSuccess,
 }: ProjectModalProps) {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        control,
+        formState: { errors },
+    } = useForm<ProjectFormData>({
+        resolver: zodResolver(projectSchema),
+        defaultValues: {
+            title: '',
+            genre: '',
+            tracks: [],
+            parts: [],
+            scenes: [],
+        },
+    });
     const { data: project, isLoading } = useQuery({
         queryKey: ['project', projectId],
         queryFn: async () => {
@@ -108,4 +142,48 @@ export default function ProjectModal({
             </DialogPortal>
         </Dialog>
     );
+}
+function zodResolver(
+    projectSchema: z.ZodObject<
+        {
+            title: z.ZodString;
+            genre: z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<''>]>;
+            tracks: z.ZodArray<
+                z.ZodObject<
+                    {
+                        id: z.ZodNumber;
+                        label: z.ZodUnion<
+                            [z.ZodOptional<z.ZodString>, z.ZodLiteral<''>]
+                        >;
+                    },
+                    z.core.$strip
+                >
+            >;
+            parts: z.ZodArray<
+                z.ZodObject<
+                    {
+                        id: z.ZodNumber;
+                        label: z.ZodUnion<
+                            [z.ZodOptional<z.ZodString>, z.ZodLiteral<''>]
+                        >;
+                    },
+                    z.core.$strip
+                >
+            >;
+            scenes: z.ZodArray<
+                z.ZodObject<
+                    {
+                        id: z.ZodNumber;
+                        label: z.ZodUnion<
+                            [z.ZodOptional<z.ZodString>, z.ZodLiteral<''>]
+                        >;
+                    },
+                    z.core.$strip
+                >
+            >;
+        },
+        z.core.$strip
+    >,
+) {
+    throw new Error('Function not implemented.');
 }
