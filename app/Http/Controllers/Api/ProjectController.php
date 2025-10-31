@@ -5,7 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
 use App\Jobs\ProcessProjectBackup;
+use App\Models\PartLayout;
 use App\Models\Project;
+use App\Models\SceneLayout;
+use App\Models\TrackLayout;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -21,9 +26,20 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:32',
+            'genre' => 'nullable|string|max:16',
+        ]);
+
+        $project = $request->user()->projects()->create($validated);
+
+        TrackLayout::factory(8)->create(['project_id' => $project->id]);
+        PartLayout::factory(8)->create(['project_id' => $project->id]);
+        SceneLayout::factory(8)->create(['project_id' => $project->id]);
+
+        return to_route('projects');
     }
 
     /**
@@ -44,15 +60,31 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        if ($request->user()->id !== $project->user_id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:32',
+            'genre' => 'nullable|string|max:16',
+        ]);
+        $project->update($validated);
+
+        return to_route('projects');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project): JsonResponse
     {
-        //
+        if ($request->user()->id !== $project->user_id) {
+            abort(403);
+        }
+
+        $project->delete();
+
+        return response()->json(null, 204);
     }
 
     public function process(Project $project)
