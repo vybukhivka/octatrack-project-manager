@@ -39,9 +39,9 @@ class ProjectFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Project $project) {
-            TrackLayout::factory()->for($project)->create();
-            SceneLayout::factory()->for($project)->create();
-            PartLayout::factory()->for($project)->create();
+            TrackLayout::factory(8)->for($project)->create();
+            SceneLayout::factory(16)->for($project)->create();
+            PartLayout::factory(4)->for($project)->create();
         });
     }
 }

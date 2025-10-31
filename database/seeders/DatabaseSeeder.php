@@ -18,23 +18,19 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $user = User::firstOrCreate(
-            ['email' => 'test@example.com'],
+            ['email' => 'check@check.com'],
             [
                 'name' => 'Test User',
-                'password' => 'password',
+                'password' => 'qwer1234',
                 'email_verified_at' => now(),
             ],
         );
-
         $project = Project::factory()->create([
             'user_id' => $user->id,
             'title' => 'First Project',
         ]);
 
-        TrackLayout::factory()->create(['project_id' => $project->id]);
-        PartLayout::factory()->create(['project_id' => $project->id]);
-        SceneLayout::factory()->create(['project_id' => $project->id]);
-
-        Project::factory(8)->create(['user_id' => $user->id]);
+        Project::factory(7)->create(['user_id' => $user->id]);
+        User::factory(2)->has(Project::factory(3))->create();
     }
 }
