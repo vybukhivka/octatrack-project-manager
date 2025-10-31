@@ -20,7 +20,19 @@ class TrackLayoutFactory extends Factory
         return [
             'project_id' => Project::factory(),
             'track_index' => fake()->numberBetween(1, 8),
-            'label' => fake()->word(),
+            'label' => fake()->randomElement([
+                'BD',
+                'SD',
+                'HT',
+                'BL',
+                'PD',
+                'ST',
+                'FX',
+                'DL',
+                'SL',
+                'FL',
+                'VO',
+            ]),
         ];
     }
 }

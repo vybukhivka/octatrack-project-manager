@@ -20,7 +20,14 @@ class PartLayoutFactory extends Factory
         return [
             'project_id' => Project::factory(),
             'part_index' => fake()->numberBetween(1, 4),
-            'label' => fake()->word(),
+            'label' => fake()->randomElement([
+                'full',
+                'intro',
+                'outro',
+                'break',
+                'side',
+                'part',
+            ]),
         ];
     }
 }

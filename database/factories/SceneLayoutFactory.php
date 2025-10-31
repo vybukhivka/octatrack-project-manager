@@ -20,7 +20,26 @@ class SceneLayoutFactory extends Factory
         return [
             'project_id' => Project::factory(),
             'scene_index' => fake()->numberBetween(1, 16),
-            'label' => fake()->word(),
+            'label' => fake()->randomElement([
+                'LP',
+                'HP',
+                'V1',
+                'V2',
+                'V3',
+                'V4',
+                'B1',
+                'B2',
+                'B3',
+                'B4',
+                'S1',
+                'S2',
+                'S3',
+                'S4',
+                'R1',
+                'R2',
+                'R3',
+                'R4',
+            ]),
         ];
     }
 }
