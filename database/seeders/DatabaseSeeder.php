@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\PartLayout;
 use App\Models\Project;
+use App\Models\SceneLayout;
+use App\Models\TrackLayout;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::firstOrCreate(
+        $user = User::firstOrCreate(
             ['email' => 'test@example.com'],
             [
                 'name' => 'Test User',
@@ -23,6 +26,15 @@ class DatabaseSeeder extends Seeder
             ],
         );
 
-        Project::factory(10)->create();
+        $project = Project::factory()->create([
+            'user_id' => $user->id,
+            'title' => 'First Project',
+        ]);
+
+        TrackLayout::factory()->create(['project_id' => $project->id]);
+        PartLayout::factory()->create(['project_id' => $project->id]);
+        SceneLayout::factory()->create(['project_id' => $project->id]);
+
+        Project::factory(8)->create(['user_id' => $user->id]);
     }
 }

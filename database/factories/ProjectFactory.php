@@ -21,9 +21,16 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->title(),
+            'title' => fake()->monthName(),
             'number_of_tracks' => fake()->numberBetween(4, 16),
-            'genre' => fake()->word(),
+            'genre' => fake()->randomElement([
+                'techno',
+                'electo',
+                'idm',
+                'ambient',
+                'tech',
+                'minimal',
+            ]),
             'duration_minutes' => fake()->numberBetween(30, 90),
             'is_done' => fake()->boolean(),
         ];

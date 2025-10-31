@@ -12,6 +12,7 @@ class Project extends Model
 
     protected $fillable = [
         'title',
+        'user_id',
         'number_of_tracks',
         'status',
         'genre',

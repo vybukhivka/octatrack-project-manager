@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class PartLayoutFactory extends Factory
     public function definition(): array
     {
         return [
+            'project_id' => Project::factory(),
             'part_index' => fake()->numberBetween(1, 4),
             'label' => fake()->word(),
         ];

@@ -31,6 +31,10 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        if ($project->user_id !== request()->user()->id) {
+            abort(403, 'Unathorized');
+        }
+
         $project->load(['trackLayout', 'partLayout', 'sceneLayout']);
         return new ProjectResource($project);
     }

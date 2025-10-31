@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class SceneLayoutFactory extends Factory
     public function definition(): array
     {
         return [
+            'project_id' => Project::factory(),
             'scene_index' => fake()->numberBetween(1, 16),
             'label' => fake()->word(),
         ];

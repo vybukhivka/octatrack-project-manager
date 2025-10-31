@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->unsignedInteger('duration_minutes');
             $table->boolean('is_done')->default(false);
             $table->string('status')->nullable()->default('pending');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
