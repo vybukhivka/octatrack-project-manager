@@ -36,8 +36,8 @@ class ProjectController extends Controller
         $project = $request->user()->projects()->create($validated);
 
         TrackLayout::factory(8)->create(['project_id' => $project->id]);
-        PartLayout::factory(8)->create(['project_id' => $project->id]);
-        SceneLayout::factory(8)->create(['project_id' => $project->id]);
+        PartLayout::factory(4)->create(['project_id' => $project->id]);
+        SceneLayout::factory(16)->create(['project_id' => $project->id]);
 
         return to_route('projects');
     }
