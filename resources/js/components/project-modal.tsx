@@ -1,9 +1,10 @@
 import ProjectForm from '@/components/project-form';
-import { useProjectForm, type ProjectFormData } from '@/hooks/use-project-form';
+import { ProjectFormData, useProjectForm } from '@/hooks/use-project-form';
+import { Layout } from '@/types';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
+import { FieldPath, SubmitHandler } from 'react-hook-form';
 import {
     Dialog,
     DialogContent,
@@ -46,11 +47,18 @@ export default function ProjectModal({
             onSaveSuccess();
             setIsEditing(isCreateMode);
         },
-        onError: (error: any) => {
-            if (error.response && error.response.status === 422) {
-                const validationErrors = error.response.data.errors;
+        onError: (error: AxiosError | Error) => {
+            if (
+                axios.isAxiosError(error) &&
+                error.response &&
+                error.response.status === 422
+            ) {
+                const validationErrors = error.response.data.errors as Record<
+                    string,
+                    string[]
+                >;
                 Object.keys(validationErrors).forEach((key) => {
-                    formMethods.setError(key as any, {
+                    formMethods.setError(key as FieldPath<ProjectFormData>, {
                         type: 'manual',
                         message: validationErrors[key][0],
                     });
@@ -69,7 +77,7 @@ export default function ProjectModal({
         onSuccess: () => {
             onSaveSuccess();
         },
-        onError: (error: any) => {
+        onError: (error: AxiosError | unknown) => {
             console.error('Deletion Failed:', error);
             alert('Could not delete project.');
         },
@@ -136,7 +144,7 @@ export default function ProjectModal({
                                     </h4>
                                     <div className="grid grid-cols-4 gap-2 rounded border p-2">
                                         {project.tracks?.map(
-                                            (track: any, i: number) => (
+                                            (track: Layout, i: number) => (
                                                 <div
                                                     key={track.id}
                                                     className="text-sm dark:text-gray-300"
@@ -154,7 +162,7 @@ export default function ProjectModal({
                                     </h4>
                                     <div className="grid grid-cols-2 gap-2 rounded border p-2">
                                         {project.parts?.map(
-                                            (part: any, i: number) => (
+                                            (part: Layout, i: number) => (
                                                 <div
                                                     key={part.id}
                                                     className="text-sm dark:text-gray-300"
@@ -172,7 +180,7 @@ export default function ProjectModal({
                                     </h4>
                                     <div className="grid grid-cols-4 gap-2 rounded border p-2">
                                         {project.scenes?.map(
-                                            (scene: any, i: number) => (
+                                            (scene: Layout, i: number) => (
                                                 <div
                                                     key={scene.id}
                                                     className="text-sm dark:text-gray-300"

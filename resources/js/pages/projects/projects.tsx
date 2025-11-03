@@ -4,7 +4,7 @@ import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { useProjects } from '@/hooks/use-projects';
 import AppLayout from '@/layouts/app-layout';
 import { projects as projectsRoute } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
+import { Project, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -46,7 +46,7 @@ export default function Projects() {
                     {isLoading && <div>Loading...</div>}
                     {isError && <div>Error fetching data.</div>}
                     {projects &&
-                        projects.map((project: any) => (
+                        projects.map((project: Project) => (
                             <div
                                 key={project.id}
                                 onClick={() => {

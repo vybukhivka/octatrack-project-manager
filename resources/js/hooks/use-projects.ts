@@ -1,8 +1,9 @@
+import { Project } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export function useProjects() {
-    return useQuery({
+    return useQuery<Project[]>({
         queryKey: ['projects'],
         queryFn: async () => {
             try {
