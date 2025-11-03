@@ -10,23 +10,28 @@ use App\Models\Project;
 use App\Models\SceneLayout;
 use App\Models\TrackLayout;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): ResourceCollection
     {
-        return ProjectResource::collection(request()->user()->projects);
+        $projects = $request
+            ->user()
+            ->projects()
+            ->with(['trackLayout', 'partLayout', 'sceneLayout'])
+            ->get();
+        return ProjectResource::collection($projects);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): ProjectResource
     {
         $validated = $request->validate([
             'title' => 'required|string|max:32',
@@ -39,16 +44,16 @@ class ProjectController extends Controller
         PartLayout::factory(4)->create(['project_id' => $project->id]);
         SceneLayout::factory(16)->create(['project_id' => $project->id]);
 
-        return to_route('projects');
+        return (new ProjectResource($project))->response()->setStatusCode(201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Project $project, Request $request): ProjectResource
     {
-        if ($project->user_id !== request()->user()->id) {
-            abort(403, 'Unathorized');
+        if ($project->user_id !== $request->user()->id) {
+            abort(403, 'Unauthorized');
         }
 
         $project->load(['trackLayout', 'partLayout', 'sceneLayout']);
@@ -58,7 +63,7 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project): RedirectResponse
+    public function update(Request $request, Project $project): ProjectResource
     {
         if ($request->user()->id !== $project->user_id) {
             abort(403);
@@ -70,13 +75,13 @@ class ProjectController extends Controller
         ]);
         $project->update($validated);
 
-        return to_route('projects');
+        return new ProjectResource($project);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project): JsonResponse
+    public function destroy(Request $request, Project $project): JsonResponse
     {
         if ($request->user()->id !== $project->user_id) {
             abort(403);
@@ -87,8 +92,12 @@ class ProjectController extends Controller
         return response()->json(null, 204);
     }
 
-    public function process(Project $project)
+    public function process(Project $project, Request $request): JsonResponse
     {
+        if ($project->user_id !== $request->user()->id) {
+            abort(403, 'Unauthorized');
+        }
+
         $project->update(['status' => 'processing']);
         ProcessProjectBackup::dispatch($project);
         return response()->json([
