@@ -1,18 +1,19 @@
 import ProjectModal from '@/components/project-modal';
 import { Button } from '@/components/ui/button';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { useProjects } from '@/hooks/use-projects';
 import AppLayout from '@/layouts/app-layout';
-import { projects } from '@/routes';
+import { projects as projectsRoute } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Projects',
-        href: projects().url,
+        href: projectsRoute().url,
     },
 ];
 axios.defaults.withCredentials = true;
@@ -23,32 +24,8 @@ export default function Projects() {
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
         null,
     );
-
     const queryClient = useQueryClient();
-    const {
-        data: projects,
-        isLoading,
-        isError,
-    } = useQuery({
-        queryKey: ['projects'],
-        queryFn: async () => {
-            try {
-                const response = await axios.get('/api/projects');
-
-                return response.data.data;
-            } catch (err) {
-                console.error('Error fetching projects:', err);
-                if (axios.isAxiosError(err)) {
-                    console.error(
-                        'Axios error details:',
-                        err.response?.status,
-                        err.response?.data,
-                    );
-                }
-                throw err;
-            }
-        },
-    });
+    const { data: projects, isLoading, isError } = useProjects();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -69,7 +46,7 @@ export default function Projects() {
                     {isLoading && <div>Loading...</div>}
                     {isError && <div>Error fetching data.</div>}
                     {projects &&
-                        projects.map((project) => (
+                        projects.map((project: any) => (
                             <div
                                 key={project.id}
                                 onClick={() => {
@@ -83,7 +60,11 @@ export default function Projects() {
                                         <span>{project.title}</span>
                                     </h3>
                                     <span
-                                        className={`relative top-3 inline-block h-1 w-1 rounded-full ${project.is_done ? 'bg-green-500' : 'bg-red-500'} `}
+                                        className={`relative top-3 inline-block h-1 w-1 rounded-full ${
+                                            project.is_done
+                                                ? 'bg-green-500'
+                                                : 'bg-red-500'
+                                        } `}
                                     ></span>
                                 </div>
 
