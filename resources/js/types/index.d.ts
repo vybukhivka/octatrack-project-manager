@@ -41,3 +41,24 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Layout {
+    id: number;
+    label: string | null;
+    project_id: number;
+}
+
+export interface Project {
+    id: number;
+    title: string;
+    genre: string | null;
+    is_done: boolean;
+    number_of_tracks: number;
+    duration_minutes: number;
+    user_id: number;
+    tracks: Layout[];
+    parts: Layout[];
+    scenes: Layout[];
+    created_at: string;
+    updated_at: string;
+}
