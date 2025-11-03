@@ -19,8 +19,8 @@ class PartLayoutFactory extends Factory
     {
         return [
             'project_id' => Project::factory(),
-            'part_index' => fake()->numberBetween(1, 4),
-            'label' => fake()->randomElement([
+            'part_index' => $this->faker->numberBetween(1, 4),
+            'label' => $this->faker->randomElement([
                 'full',
                 'intro',
                 'outro',
