@@ -22,13 +22,13 @@ This is a full-stack project management tool designed to help music producers or
     ```
 2.  **Install Dependencies & Build Assets:**
     ```bash
-    sail composer install
-    sail npm install
-    sail composer run dev
+    ./vendor/bin/sail composer install
+    ./vendor/bin/sail npm install
+    ./vendor/bin/sail composer run dev
     ```
 3.  **Database Setup:**
     ```bash
-    sail artisan migrate --seed
+    ./vendor/bin/sail artisan migrate --seed
     ```
 4.  **Access App:**
     The application is available at `http://localhost`.
