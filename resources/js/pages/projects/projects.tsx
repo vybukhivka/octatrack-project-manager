@@ -1,10 +1,11 @@
 import ProjectModal from '@/components/project-modal';
+import { Button } from '@/components/ui/button';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { projects } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -18,10 +19,12 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
 export default function Projects() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
         null,
     );
 
+    const queryClient = useQueryClient();
     const {
         data: projects,
         isLoading,
@@ -50,6 +53,17 @@ export default function Projects() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Projects" />
+            <Button
+                onClick={() => {
+                    setSelectedProjectId(null);
+                    setIsModalOpen(true);
+                }}
+                size="sm"
+                variant="ghost"
+                className="mt-4 ml-4 w-48 cursor-pointer border"
+            >
+                + Create New Project
+            </Button>
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     {isLoading && <div>Loading...</div>}
@@ -58,7 +72,10 @@ export default function Projects() {
                         projects.map((project) => (
                             <div
                                 key={project.id}
-                                onClick={() => setSelectedProjectId(project.id)}
+                                onClick={() => {
+                                    setSelectedProjectId(project.id);
+                                    setIsModalOpen(true);
+                                }}
                                 className="relative flex aspect-video cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-sidebar-border/70 p-4 shadow-sm dark:border-sidebar-border"
                             >
                                 <div className="mb-3 flex justify-between">
@@ -98,11 +115,19 @@ export default function Projects() {
                                 </div>
                             </div>
                         ))}
-                    {selectedProjectId && (
+
+                    {isModalOpen && (
                         <ProjectModal
                             projectId={selectedProjectId}
-                            open={!!selectedProjectId}
-                            onClose={() => setSelectedProjectId(null)}
+                            open={isModalOpen}
+                            onClose={() => setIsModalOpen(false)}
+                            onSaveSuccess={() => {
+                                setIsModalOpen(false);
+                                setSelectedProjectId(null);
+                                queryClient.invalidateQueries({
+                                    queryKey: ['projects'],
+                                });
+                            }}
                         />
                     )}
                 </div>

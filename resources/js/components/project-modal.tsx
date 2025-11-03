@@ -27,7 +27,7 @@ const projectSchema = z.object({
 });
 
 type ProjectModalProps = {
-    projectId?: number;
+    projectId: number | null;
     open: boolean;
     onClose: () => void;
     onSaveSuccess: () => void;
@@ -112,12 +112,36 @@ export default function ProjectModal({
             setIsEditing(isCreateMode);
         },
         onError: (error: any) => {
-            alert('Something wrong...');
+            if (error.response && error.response.status === 422) {
+                console.error('Validation Failed:', error.response.data.errors);
+                alert('Something wrong...');
+            } else {
+                console.error('Error occurred:', error);
+                alert('Something wrong...');
+            }
+        },
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: () => {
+            return axios.delete(`/api/projects/${projectId}`);
+        },
+        onSuccess: () => {
+            onSaveSuccess();
+        },
+        onError: (error: any) => {
+            console.error('Deletion Failed:', error);
         },
     });
 
     const onSubmit: SubmitHandler<ProjectFormData> = (data) => {
         mutation.mutate(data);
+    };
+
+    const handleDelete = () => {
+        if (projectId) {
+            deleteMutation.mutate();
+        }
     };
 
     const handleCancel = () => {
@@ -380,15 +404,18 @@ export default function ProjectModal({
                             <div className="mt-6 flex justify-end gap-4">
                                 <button
                                     type="button"
-                                    onClick={onClose}
-                                    className="rounded border px-4 py-2"
+                                    onClick={handleDelete}
+                                    disabled={deleteMutation.isPending}
+                                    className="rounded border border-red-500/50 px-4 py-2 text-red-500/80 transition hover:bg-red-100 dark:hover:bg-red-900/30"
                                 >
-                                    Close
+                                    {deleteMutation.isPending
+                                        ? 'Deleting...'
+                                        : 'Delete'}
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setIsEditing(true)}
-                                    className="rounded border px-4 py-2 text-white"
+                                    className="rounded border px-4 py-2 text-white transition dark:hover:bg-white/10"
                                 >
                                     Edit
                                 </button>
