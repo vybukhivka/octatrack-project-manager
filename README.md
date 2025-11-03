@@ -2,23 +2,22 @@
 
 This is a full-stack project management tool designed to help music producers organize and maintain structured templates for hardware sequencing projects.
 
-## Core Stack
+## Tech Stack
 
 | Component | Technology |
 | :--- | :--- |
-| **Backend** | **Laravel 12+** (PHP) | 
-| **Authentication** | **Fortify & Session Auth** |
-| **API** | **API Resources** & **Eager Loading** |
+| **Backend** | **Laravel** | 
+| **Frontend** | **React, TypeScript, Inertia.js, TanStack Query** |
+| **Forms** | **Zod, React Hook Form** |
 | **Database** | **MySQL** |
-| **Frontend** | **React / TypeScript / Inertia.js** |
-| **Forms** | **TanStack Query, Zod, React Hook Form** |
+| **Environment** | **Docker(Sail)** |
 
-##  Local Setup
+## Local Setup
 
 1.  **Clone and Start Sail:**
     ```bash
-    git clone [your-repo-url] octatrack-manager
-    cd octatrack-manager
+    git clone git@github.com:vybukhivka/octatrack-project-manager.git
+    cd octatrack-project-manager
     ./vendor/bin/sail up -d
     ```
 2.  **Install Dependencies & Build Assets:**
