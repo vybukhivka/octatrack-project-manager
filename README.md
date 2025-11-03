@@ -23,8 +23,8 @@ This is a full-stack project management tool designed to help music producers or
 2.  **Install Dependencies & Build Assets:**
     ```bash
     sail composer install
-    npm install
-    npm run dev
+    sail npm install
+    sail composer run dev
     ```
 3.  **Database Setup:**
     ```bash
