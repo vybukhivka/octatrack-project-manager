@@ -19,8 +19,8 @@ class SceneLayoutFactory extends Factory
     {
         return [
             'project_id' => Project::factory(),
-            'scene_index' => $this->faker->numberBetween(1, 16),
-            'label' => $this->faker->randomElement([
+            'scene_index' => \fake()->numberBetween(1, 16),
+            'label' => \fake()->randomElement([
                 'LP',
                 'HP',
                 'V1',

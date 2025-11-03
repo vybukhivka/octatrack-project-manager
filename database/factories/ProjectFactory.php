@@ -21,9 +21,9 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->monthName(),
-            'number_of_tracks' => $this->faker->numberBetween(4, 16),
-            'genre' => $this->faker->randomElement([
+            'title' => \fake()->monthName(),
+            'number_of_tracks' => \fake()->numberBetween(4, 16),
+            'genre' => \fake()->randomElement([
                 'techno',
                 'electo',
                 'idm',
@@ -31,8 +31,8 @@ class ProjectFactory extends Factory
                 'tech',
                 'minimal',
             ]),
-            'duration_minutes' => $this->faker->numberBetween(30, 90),
-            'is_done' => $this->faker->boolean(),
+            'duration_minutes' => \fake()->numberBetween(30, 90),
+            'is_done' => \fake()->boolean(),
         ];
     }
 

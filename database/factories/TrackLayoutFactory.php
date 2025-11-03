@@ -19,8 +19,8 @@ class TrackLayoutFactory extends Factory
     {
         return [
             'project_id' => Project::factory(),
-            'track_index' => $this->faker->numberBetween(1, 8),
-            'label' => $this->faker->randomElement([
+            'track_index' => \fake()->numberBetween(1, 8),
+            'label' => \fake()->randomElement([
                 'BD',
                 'SD',
                 'HT',
