@@ -1,6 +1,5 @@
 import ProjectModal from '@/components/project-modal';
 import { Button } from '@/components/ui/button';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { useProjects } from '@/hooks/use-projects';
 import AppLayout from '@/layouts/app-layout';
 import { projects as projectsRoute } from '@/routes';
@@ -111,9 +110,6 @@ export default function Projects() {
                             }}
                         />
                     )}
-                </div>
-                <div className="min-h- relative flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                 </div>
             </div>
         </AppLayout>
