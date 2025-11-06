@@ -2,6 +2,12 @@
 
 This is a full-stack project management tool designed to help music producers organize and maintain structured templates for hardware sequencing projects.
 
+## Deployment
+Network, App cluster - Laravel Cloud
+Database - Railway
+The connection is throttled. This is a combination of free-tier services, causing pages to load slowly.
+https://octatrack-project-manager-main-qqw17h.laravel.cloud/
+
 ## Tech Stack
 
 | Component | Technology |
